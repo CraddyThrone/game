@@ -1,0 +1,252 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крестики нолики</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <style>
+
+      html {
+        background-color: rgb(238, 208, 172);
+        user-select: none;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .victory {
+        top: 0;
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        border: 2px solid rgb(153, 153, 74);
+        background-color: rgb(201, 201, 55);
+        border-radius: 6px;
+        color: white;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        transition: 0.5s;
+        transform: translateY(-100%);
+        text-align: center;
+        padding: 5px 0 0px 0;
+      }
+
+      .victory--active {
+        transition: 0.5s;
+        transform: translateY(0%); 
+      }
+
+      
+
+      .field {
+        background-color: white;
+        display: grid;
+        grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+        width: 200px;
+        height: 200px;
+        border-radius: 6px;
+        box-shadow: 5px 5px 10px gray;
+      }
+
+      .el {
+        background-color:darkolivegreen;
+        margin: 5px;
+        border-radius: 6px;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+      }
+
+      .el:hover {
+        background-color: rgb(114, 133, 82);
+      }
+
+      .reset {
+        width: 200px;
+        height: 50px;
+        background-color: transparent;
+        border-radius: 6px;
+        margin-top: 30px;
+        border: 2px solid gray;
+        
+      }
+
+      .reset:hover {
+        background-color: rgba(255, 255, 255, 0.26);
+      }
+
+    </style>
+
+  <div class="victory">
+    
+  </div>  
+    
+  <div class="field">
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+
+    <div class="el">
+      <div class="el__inner"></div>
+    </div>
+  </div>
+
+  <button class="reset" type="reset">Сброс</button>
+  
+
+<script>
+
+  let el = document.querySelectorAll('.el')
+  let counter = 1
+  let reset = document.querySelector('.reset') 
+
+  let victory = document.querySelector('.victory')
+
+  
+  function check() {
+
+   //colums
+
+    for (let i = 0; i<= 2; i++) {
+      if (el[i].textContent == el[i+3].textContent && el[i].textContent == el[i+6].textContent && (el[i].textContent == 'X' || el[i].textContent == 'O' )) {
+        return el[i].textContent
+      }
+    }
+
+  //rows    
+
+    for (let i = 0; i <= 6; i = i + 3) {
+      if (el[i].textContent == el[i+1].textContent && el[i].textContent == el[i+2].textContent  && (el[i].textContent == 'X' || el[i].textContent == 'O' )) {
+       
+        return el[i].textContent
+      }
+    }
+
+    //deg 
+
+    
+    if (el[0].textContent == el[4].textContent && el[0].textContent == el[8].textContent  && (el[0].textContent == 'X' || el[0].textContent == 'O' )) {
+       
+        return el[0].textContent
+    }
+
+    if (el[2].textContent == el[4].textContent && el[2].textContent == el[6].textContent  && (el[2].textContent == 'X' || el[2].textContent == 'O' )) {
+       
+        return el[2].textContent
+    }
+  
+
+  }
+
+  for (let i = 0; i<= el.length; i++) {
+
+    try {
+
+      el[i].addEventListener('click', function() {
+
+       
+
+        if (el[i].textContent != 'X' && el[i].textContent != 'O') {
+
+          if (counter % 2 == 0) {
+            el[i].textContent = 'X'
+            counter++
+            if (check() == 'X' || check() == 'O') {
+              victory.classList.add('victory--active')
+              victory.textContent = `Игрок ${check()} победил!`
+        
+            }
+            
+          } else {
+            el[i].textContent = 'O'
+            counter++
+            if (check() == 'X' || check() == 'O') {
+              victory.classList.add('victory--active')
+              victory.textContent = `Игрок ${check()} победил!`
+        
+            }
+            
+          }
+ 
+        }
+     
+    })
+
+    } catch {
+      console.log('fix error')
+    }
+
+  }
+
+  reset.addEventListener('click', function() {
+
+
+    for (let i = 0; i<= el.length; i++) {
+
+      try {
+        el[i].textContent = ''
+        counter = 1
+       
+      } catch {
+        console.log('fix err')
+      }
+        
+    }
+
+  })
+
+ victory.addEventListener('click', function() {
+   victory.classList.remove('victory--active')
+ })
+
+  
+
+</script>
+
+
+</body>
+</html>
